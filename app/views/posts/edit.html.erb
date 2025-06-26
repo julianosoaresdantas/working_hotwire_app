@@ -1,0 +1,1 @@
+<h1>Editing post</h1><%= form_with(model: @post, data: { turbo: false }) do |form| %><%= render "form", post: @post, form: form %><% end %><br><div><%= link_to "Show this post", @post %> | <%= link_to "Back to posts", posts_path %></div>
