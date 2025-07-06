@@ -1,0 +1,9 @@
+<%= form_with(model: [post, Comment.new], local: false, data: { turbo_stream: true }, id: "new_comment_form") do |form| %>
+  <div>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %>
+  </div>
+  <div>
+    <%= form.submit "Create Comment" %>
+  </div>
+<% end %>

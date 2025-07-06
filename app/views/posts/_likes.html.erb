@@ -1,0 +1,13 @@
+<%# This partial is rendered dynamically by Turbo Streams %>
+<div id="likes_section_post_<%= post.id %>" class="flex items-center space-x-2">
+  <% if user_signed_in? %>
+    <% if post.liked_by?(current_user) %>
+      <%= button_to "Unlike", post_like_path(post, post.likes.find_by(user: current_user)), method: :delete, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-md text-sm transition-colors" %>
+    <% else %>
+      <%= button_to "Like", post_likes_path(post), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-md text-sm transition-colors" %>
+    <% end %>
+  <% else %>
+    <span class="text-gray-600 text-sm">Log in to like</span>
+  <% end %>
+  <span class="text-gray-800 font-semibold text-lg">Likes: <%= post.likes.count %></span>
+</div>

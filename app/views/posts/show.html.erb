@@ -1,0 +1,53 @@
+<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">
+  <p class="text-green-600 text-sm mb-4"><%= notice %></p>
+
+  <h1 class="text-4xl font-extrabold text-gray-900 mb-4"><%= @post.title %></h1>
+  <p class="text-gray-700 text-lg mb-6 leading-relaxed"><%= @post.content %></p>
+
+  <% if @post.image.attached? %>
+    <div class="flex justify-center mb-8">
+      <%= image_tag @post.image, class: "w-64 h-64 object-contain rounded-lg shadow-md max-w-md" %>
+    </div>
+  <% end %>
+
+  <%# NEW: Display Categories %>
+  <% if @post.categories.any? %>
+    <div class="mb-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Categories:</h3>
+      <div class="flex flex-wrap gap-2">
+        <% @post.categories.each do |category| %>
+          <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+            <%= category.name %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="flex items-center justify-between mb-8">
+    <%= render partial: "posts/likes", locals: { post: @post } %>
+    <div class="text-gray-500 text-sm">
+      Posted by <span class="font-semibold"><%= @post.user.email %></span> <%= time_ago_in_words(@post.created_at) %> ago
+    </div>
+  </div>
+
+  <div class="flex space-x-4 mb-10">
+    <% if user_signed_in? && @post.user_id == current_user.id %>
+      <%= link_to "Edit this post", edit_post_path(@post), class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition-colors shadow-md" %>
+      <%= button_to "Destroy this post", @post, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this post?" }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md transition-colors shadow-md" %>
+    <% end %>
+    <%= link_to "Back to posts", posts_path, class: "bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors shadow-md" %>
+  </div>
+
+  <div id="comments" class="border-t border-gray-200 pt-8 mt-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Comments (<%= @post.comments.count %>)</h2>
+    <%= render @post.comments %>
+  </div>
+
+  <% if user_signed_in? %>
+    <h3 class="text-xl font-bold text-gray-800 mt-8 mb-4">Add a comment</h3>
+    <div id="comment_form">
+      <%= render "comments/form", post: @post, comment: @comment %>
+    </div>
+  <% end %>
+</div>

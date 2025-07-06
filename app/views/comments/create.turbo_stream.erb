@@ -1,0 +1,14 @@
+<%# app/views/comments/create.turbo_stream.erb %>
+
+<%# Append the new comment to the 'comments' div %>
+<%= turbo_stream.append "comments" do %>
+  <%= render @comment %>
+<% end %>
+
+<%# Replace the comment form to clear it after successful submission %>
+<%= turbo_stream.replace "comment_form" do %>
+  <%= render "comments/form", post: @post, comment: Comment.new %>
+<% end %>
+
+<%# Replace the flash area with a success message %>
+<%= turbo_stream.replace "flash", partial: "layouts/flash", locals: { notice: "Comment was successfully created." } %>

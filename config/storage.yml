@@ -1,0 +1,17 @@
+# config/storage.yml
+
+test:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+
+# For production, you'd configure services like Amazon S3, Google Cloud Storage, etc.
+# production:
+#   service: S3
+#   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
+#   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
+#   bucket: your-production-bucket
+#   region: us-east-1

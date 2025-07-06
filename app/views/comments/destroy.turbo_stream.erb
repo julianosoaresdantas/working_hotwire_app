@@ -1,0 +1,6 @@
+<%# app/views/comments/destroy.turbo_stream.erb %>
+
+<%= turbo_stream.remove dom_id(@comment) %>
+
+<%# Flash message for success %>
+<%= turbo_stream.replace "flash", partial: "layouts/flash", locals: { notice: "Comment was successfully destroyed." } %><%= turbo_stream.remove dom_id(@comment) %>

@@ -1,0 +1,10 @@
+# test/fixtures/posts.yml
+one:
+  title: My First Post
+  content: This is the content of my first post.
+  user: one # Refers to the 'one' user fixture
+
+two:
+  title: Another Post
+  content: Content for another post.
+  user: one # Refers to the 'one' user fixture
