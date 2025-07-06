@@ -35,3 +35,10 @@ production:
     <<: *default
     database: storage/production_queue.sqlite3
     migrations_paths: db/queue_migrate
+<<<<<<< HEAD
+=======
+  cable:
+    <<: *default
+    database: storage/production_cable.sqlite3
+    migrations_paths: db/cable_migrate
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

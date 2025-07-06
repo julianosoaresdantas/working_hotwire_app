@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # app/models/post.rb
 class Post < ApplicationRecord
   belongs_to :user
@@ -15,4 +16,7 @@ class Post < ApplicationRecord
   def liked_by?(user)
     likes.exists?(user: user)
   end
+=======
+class Post < ApplicationRecord
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
 end

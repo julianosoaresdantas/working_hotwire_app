@@ -22,15 +22,32 @@ Rails.application.configure do
   config.consider_all_requests_local = true
   config.cache_store = :null_store
 
+<<<<<<< HEAD
 # NEW: Configure Active Storage service for the test environment
   config.active_storage.service = :test
 
+=======
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
   # Render exception templates for rescuable exceptions and raise for other exceptions.
   config.action_dispatch.show_exceptions = :rescuable
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+<<<<<<< HEAD
+=======
+  # Store uploaded files on the local file system in a temporary directory.
+  config.active_storage.service = :test
+
+  # Tell Action Mailer not to deliver emails to the real world.
+  # The :test delivery method accumulates sent emails in the
+  # ActionMailer::Base.deliveries array.
+  config.action_mailer.delivery_method = :test
+
+  # Set host to be used by links generated in mailer templates.
+  config.action_mailer.default_url_options = { host: "example.com" }
+
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 

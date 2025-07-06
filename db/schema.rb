@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_07_05_192801) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.text "name", null: false
@@ -104,4 +105,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_192801) do
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
+=======
+ActiveRecord::Schema[8.0].define(version: 2025_06_24_174758) do
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
 end

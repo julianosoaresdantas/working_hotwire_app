@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="max-w-xl mx-auto py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Editing Post</h1>
   <%= render "form", post: @post %>
@@ -6,3 +7,6 @@
     <%= link_to "Back to posts", posts_path, class: "text-gray-600 hover:underline font-medium" %>
   </div>
 </div>
+=======
+<h1>Editing post</h1><%= form_with(model: @post, data: { turbo: false }) do |form| %><%= render "form", post: @post, form: form %><% end %><br><div><%= link_to "Show this post", @post %> | <%= link_to "Back to posts", posts_path %></div>
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

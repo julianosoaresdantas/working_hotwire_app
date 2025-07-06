@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # test/models/post_test.rb
 require "test_helper" # This MUST be the first line
 
@@ -41,3 +42,12 @@ class PostTest < ActiveSupport::TestCase
     assert_not post.liked_by?(user), "Post should not be liked by the user"
   end
 end # This 'end' closes the class PostTest
+=======
+require "test_helper"
+
+class PostTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

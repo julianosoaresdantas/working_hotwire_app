@@ -43,7 +43,11 @@ class GithubStatusChecks
   attr_reader :remote_url, :git_sha, :github_client, :combined_status
 
   def initialize
+<<<<<<< HEAD
     @remote_url = github_repo_from_remote_url
+=======
+    @remote_url = `git config --get remote.origin.url`.strip.delete_prefix("https://github.com/")
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
     @git_sha = `git rev-parse HEAD`.strip
     @github_client = Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
     refresh!
@@ -77,6 +81,7 @@ class GithubStatusChecks
       "Build not started..."
     end
   end
+<<<<<<< HEAD
 
   private
     def github_repo_from_remote_url
@@ -89,6 +94,8 @@ class GithubStatusChecks
         url
       end
     end
+=======
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
 end
 
 

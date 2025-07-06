@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # test/fixtures/posts.yml
 one:
   title: My First Post
@@ -8,3 +9,14 @@ two:
   title: Another Post
   content: Content for another post.
   user: one # Refers to the 'one' user fixture
+=======
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  content: MyText
+
+two:
+  title: MyString
+  content: MyText
+>>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
