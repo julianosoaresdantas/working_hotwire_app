@@ -1,26 +1,23 @@
 # config/database.yml
+
 default: &default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  # For local development/test, keep these:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
 development:
   <<: *default
-  database: working_hotwire_app_development
-  # username: your_dev_username # Optional: if you have a local PostgreSQL user
-  # password: your_dev_password # Optional: if you have a local PostgreSQL password
+  database: your_app_development # Replace with your actual local dev DB name
 
 test:
   <<: *default
-  database: working_hotwire_app_test
+  database: your_app_test # Replace with your actual local test DB name
 
 production:
   <<: *default
-  database: <%= ENV['RAILS_DB_NAME'] %>
-  username: <%= ENV['RAILS_DB_USERNAME'] %>
-  password: <%= ENV['RAILS_DB_PASSWORD'] %>
-  host: <%= ENV['RAILS_DB_HOST'] %>
-  port: <%= ENV['RAILS_DB_PORT'] %>
-  url: <%= ENV['DATABASE_URL'] %> # Render will provide this automatically
+  url: <%= ENV['DATABASE_URL'] %>
+  # All other database connection details (host, port, username, password, db name)
+  # will be parsed automatically from the DATABASE_URL environment variable
+  # provided by Elastic Beanstalk for the associated RDS instance.
