@@ -2,8 +2,7 @@
 # check=error=true
 
 # Use a base image with Ruby and a slim OS
-FROM ruby:3.3.0-slim-buster
-
+FROM ruby:3.3.0-slim-bookworm
 # Set the working directory inside the container
 WORKDIR /app
 
