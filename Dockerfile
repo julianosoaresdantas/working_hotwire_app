@@ -1,44 +1,43 @@
-# syntax=docker/dockerfile:1
-# check=error=true
+# syntax=docker/dockerfile:1.4
+FROM ruby:3.3.0-slim-bookworm
 
-# Use a base image with Ruby and a slim OS
-FROM ruby:3.2.2-slim-buster
-
-# Set the working directory inside the container
 WORKDIR /app
 
-# Install necessary system dependencies for Rails and PostgreSQL
-# nodejs is needed for JavaScript bundling (e.g., esbuild, importmap)
-# default-jdk might be needed for some JS runtimes or gems (e.g., if using JRuby or specific JS tools)
-# build-essential for compiling native extensions of gems
-# libpq-dev for PostgreSQL client libraries
-RUN apt-get update -qq && apt-get install -y \
+# Install apt-get dependencies
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     nodejs \
-    default-jdk \
-    --no-install-recommends \
+    npm \
+    # Add any other dependencies your app needs (e.g., imagemagick, libvips, etc.)
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Gemfile and Gemfile.lock first to leverage Docker cache
-# This means if only your app code changes, bundle install won't re-run
+# Install Yarn globally
+RUN npm install -g yarn
+
+# Copy Gemfile and Gemfile.lock, then install Ruby gems
 COPY Gemfile Gemfile.lock ./
+RUN bundle install --jobs "$(nproc)" --retry 3
 
-# Install RubyGems dependencies
-# --jobs $(nproc) uses all available CPU cores for faster installation
-# --without development test excludes dev/test gems from production image
-RUN bundle install --jobs $(nproc) --without development test
+# Copy package.json and yarn.lock, then install Node.js packages
+COPY package.json yarn.lock ./
+RUN yarn install --check-files # Use npm install if not using Yarn
 
-# Copy the rest of the application code
+# >>> ADD THIS LINE HERE <<<
+# Copy the Rails master key file directly into the container.
+# This is reliable for development. For production, consider Docker Secrets.
+COPY config/master.key config/master.key
+
+# Copy the rest of your application code
 COPY . .
 
-# Precompile assets for production
-# This step is crucial for Rails applications in production
-RUN bundle exec rails assets:precompile
+# Precompile assets (optional, depending on your development workflow)
+# If you get asset errors in development, you might need to run this
+# locally or move it to a specific stage in a multi-stage build.
+# RUN bundle exec rails assets:precompile
 
-# Expose the port where the Rails application will run
 EXPOSE 3000
 
-# Set the default command to run when the container starts
-# This starts the Puma web server, binding to all network interfaces (0.0.0.0)
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# Default command to run the Rails server
+CMD ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]

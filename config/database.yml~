@@ -1,0 +1,19 @@
+# config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: your_app_development # Replace with your actual local dev DB name
+
+test:
+  <<: *default
+  database: your_app_test # Replace with your actual local test DB name
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>

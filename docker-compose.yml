@@ -1,20 +1,33 @@
-version: '3.8'
-
 services:
   web:
     build: .
-    # NOVO COMANDO: Apenas inicia o contêiner com um shell para depuração.
-    command: bash
-    ports:
-      - "3000"
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
-      - .:/rails
-      - bundle_data:/usr/local/bundle
-      - sqlite_data:/rails/storage
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
     environment:
       RAILS_ENV: development
-      DATABASE_URL: sqlite3:///rails/storage/development.sqlite3
+      DATABASE_URL: postgres://postgres:password@db:5432/working_hotwire_app_development
+      RAILS_MASTER_KEY : e6461dd289682a5b00bc536c4d0a21cfcbfe8a895e3c976d5743b566cac5bbdf2ee0d09ee676b059876ba0c4ea612a3ce31cb1a76f61d320fdea15e0298d44c7
+    # because we are now copying the file in the Dockerfile.
+
+  db:
+    image: postgres:16.3-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: working_hotwire_app_development
+    ports:
+      - "5432:5432"
 
 volumes:
-  sqlite_data:
-  bundle_data:
+  postgres_data:
+  bundle_cache:
+  node_modules:

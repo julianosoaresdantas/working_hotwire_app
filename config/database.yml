@@ -6,11 +6,17 @@ default: &default
   # For local development/test, keep these:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-
 development:
-  <<: *default
-  database: your_app_development # Replace with your actual local dev DB name
-
+  adapter: postgresql
+  encoding: unicode
+  # pool: 5 # You can keep or remove this
+  # username: postgres # If you want to explicitly define, otherwise DATABASE_URL handles it
+  # password: password # If you want to explicitly define, otherwise DATABASE_URL handles it
+  host: db # THIS IS CRUCIAL: 'db' matches the service name in docker-compose.yml
+  database: working_hotwire_app_development # Matches POSTGRES_DB in docker-compose.yml
+  username: postgres # Matches POSTGRES_USER in docker-compose.yml
+  password: password # Matches POSTGRES_PASSWORD in docker-compose.yml
+  port: 5432 # Explicitly define port
 test:
   <<: *default
   database: your_app_test # Replace with your actual local test DB name
