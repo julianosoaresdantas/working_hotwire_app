@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "pages#home" # Delete or comment out this line
@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-=======
+
 # config/routes.rb
 
 Rails.application.routes.draw do
@@ -23,16 +23,16 @@ Rails.application.routes.draw do
   # Defines all standard RESTful routes for the Post resource
   resources :posts
 
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
+ 2d32fe77661cbb6d5c2f23a40816540019075e13
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-<<<<<<< HEAD
+
   # Defines the root path route ("/")
   # root "articles#index"
 end
-=======
+
   # Defines routes for Turbo Native navigation
   # See https://turbo.hotwired.dev/handbook/native#--turbo-native-navigation
   # for more information.
@@ -52,4 +52,4 @@ end
   # See https://guides.rubyonrails.org/active_storage_overview.html for more information.
   mount ActionText::Engine => "/rails/action_text"
 end
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
+ 2d32fe77661cbb6d5c2f23a40816540019075e13
