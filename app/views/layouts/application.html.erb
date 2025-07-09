@@ -1,39 +1,51 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WorkingHotwireApp</title>
+    <title><%= content_for(:title) || "My Awesome Blog" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%# Include Rails' default stylesheets and JavaScripts %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <!-- THIS IS THE CRITICAL LINE THAT WAS MISSING -->
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
       /* Custom font for a modern look */
       body {
-        font-family: "Inter", sans-serif;
+        font-family: "Inter", sans-serif; /* Make sure you've imported Inter if you use it */
       }
     </style>
+
+    <%# Optional: PWA and favicons %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= yield :head %> <%# For specific head content from views %>
   </head>
 
   <body class="bg-gray-100 min-h-screen flex flex-col">
-    <!-- Flash messages container -->
     <div id="flash" class="w-full max-w-4xl mx-auto px-4 mt-4">
       <%= render "layouts/flash" %>
     </div>
 
-    <!-- Main navigation -->
     <header class="bg-white shadow-sm py-4">
       <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
         <div class="text-2xl font-bold text-gray-800">
-          <%= link_to "My Awesome Blog", root_path, class: "hover:text-blue-600 transition-colors" %>
+          <%= link_to "My Awesome Blog", root_path, class: "hover:text-blue-600" %>
         </div>
         <nav class="space-x-4">
           <% if user_signed_in? %>
-            <span class="text-gray-700">Logged in as <%= current_user.email %>.</span>
+            <span class="text-gray-700">Logged in as <%= current_user.email %></span>
             <%= link_to "Edit profile", edit_user_registration_path, class: "text-blue-600 hover:underline" %>
-            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md transition-colors" %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "text-blue-600 hover:underline" %>
           <% else %>
             <%= link_to "Sign up", new_user_registration_path, class: "text-blue-600 hover:underline" %>
             <%= link_to "Login", new_user_session_path, class: "text-blue-600 hover:underline" %>
@@ -42,39 +54,14 @@
       </div>
     </header>
 
-    <!-- Main content area -->
     <main class="flex-grow container mx-auto px-4 py-8">
       <%= yield %>
     </main>
 
-    <!-- Optional: Footer -->
     <footer class="bg-gray-800 text-white py-4 mt-8">
       <div class="max-w-4xl mx-auto px-4 text-center text-sm">
         &copy; <%= Time.current.year %> My Awesome Blog. All rights reserved.
       </div>
     </footer>
-    <title><%= content_for(:title) || "Working Hotwire App" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
-
-  <body>
-    <%= yield %>
   </body>
 </html>
