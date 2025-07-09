@@ -18,17 +18,18 @@
     <style>
       /* Custom font for a modern look */
       body {
-        font-family: "Inter", sans-serif; /* Make sure you've imported Inter if you use it */
+        /* Assuming 'Inter' font is imported via Tailwind config or another method */
+        font-family: "Inter", sans-serif;
       }
     </style>
 
-    <%# Optional: PWA and favicons %>
+    <%# Optional: PWA and favicons - uncomment if you are setting these up %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%= yield :head %> <%# For specific head content from views %>
+    <%= yield :head %> <%# For specific head content from individual views %>
   </head>
 
   <body class="bg-gray-100 min-h-screen flex flex-col">
