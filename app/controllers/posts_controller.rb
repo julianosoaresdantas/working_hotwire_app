@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # app/controllers/posts_controller.rb
 class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
