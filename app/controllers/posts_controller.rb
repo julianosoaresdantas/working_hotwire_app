@@ -1,101 +1,21 @@
 # app/controllers/posts_controller.rb
 class PostsController < ApplicationController
+  # Ensure these are only present once, at the top of the class
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_post, only: %i[ show edit update destroy ]
   before_action :authorize_user!, only: [:edit, :update, :destroy]
 
-  # GET /posts
-  def index
-    @posts = Post.all.order(created_at: :desc)
-  end
+  # If you had a temporary CSRF bypass, it would typically go here, e.g.:
+  # skip_before_action :verify_authenticity_token, only: [:create]
 
-  # GET /posts/1
-  def show
-    @comment = Comment.new
-  end
 
-  # GET /posts/new
-  def new
-    @post = current_user.posts.build
-    @categories = Category.all # NEW: Load all categories for the form
-  end
-
-  # GET /posts/1/edit
-  def edit
-    @categories = Category.all # NEW: Load all categories for the form
-  end
-
-  # POST /posts or /posts.json
-  def create
-    @post = current_user.posts.build(post_params)
-
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /posts/1 or /posts/1.json
-  def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /posts/1 or /posts/1.json
-  def destroy
-    @post.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    def set_post
-      @post = Post.find(params[:id])
-    end
-
-    def post_params
-      # IMPORTANT: Add category_ids to permitted parameters
-      params.require(:post).permit(:title, :content, :image, category_ids: [])
-    end
-
-    def authorize_user!
-      unless @post.user_id == current_user.id
-        respond_to do |format|
-          format.html { redirect_to posts_path, alert: "Not authorized to edit this post.", data: { turbo_frame: "_top" } }
-          format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { alert: "Not authorized to edit this post." }) }
-        end
-      end
-    end
-end
-=======
-class PostsController < ApplicationController
-  # TEMPORARY FIX: Bypasses CSRF token verification for create action due to Cloud Shell proxy issues.
-  # This should be re-evaluated for production deployment for security reasons.
-  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy] # UPDATED LINE
-  # Set the @post instance variable before these actions to avoid repetition
-  before_action :set_post, only: %i[ show edit update destroy ]
-
+  # --- Your controller actions (index, show, new, create, edit, update, destroy) ---
   def index
     @posts = Post.all
   end
 
   def show
-    # @post is already set by the before_action :set_post
+    # @post is set by set_post
   end
 
   def new
@@ -103,45 +23,46 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params) # Assign allowed parameters
-
+    @post = current_user.posts.build(post_params) # Assuming posts belong_to user
     if @post.save
-      redirect_to posts_path, notice: "Post was successfully created." # Redirects to index if save is successful
+      redirect_to @post, notice: "Post was successfully created."
     else
-      # If save fails (e.g., due to validations), re-render the 'new' template
-      # and include the unprocessable_entity status to show errors
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    # @post is already set by the before_action :set_post
+    # @post is set by set_post
   end
 
   def update
-    if @post.update(post_params) # Update the post with allowed parameters
-      redirect_to @post, notice: "Post was successfully updated." # Redirects to the show page
+    if @post.update(post_params)
+      redirect_to @post, notice: "Post was successfully updated."
     else
-      # If update fails, re-render the 'edit' template and include errors
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @post.destroy # Delete the post from the database
-    redirect_to posts_path, notice: "Post was successfully destroyed." # Redirects to the index page
+    @post.destroy
+    redirect_to posts_url, notice: "Post was successfully destroyed."
   end
 
-  private # Private methods are used internally by the controller
 
-  # Finds a Post by its ID and sets it to @post for use in other actions
+  private # Private methods for the controller
+
   def set_post
     @post = Post.find(params[:id])
   end
 
-  # Strong parameters: Defines which attributes are allowed to be mass-assigned from the form
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :body, :category_id) # Adjust permitted params as per your Post model
   end
-end
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
+
+  def authorize_user!
+    unless @post.user == current_user # Assuming a 'user' association
+      redirect_to posts_path, alert: "You are not authorized to perform this action."
+    end
+  end
+
+end # <--- This 'end' should be the very last line, closing the PostsController class
