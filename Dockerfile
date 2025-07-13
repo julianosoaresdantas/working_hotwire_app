@@ -1,43 +1,46 @@
-# syntax=docker/dockerfile:1.4
-FROM ruby:3.3.0-slim-bookworm
+# Use a specific, stable Ruby version with Alpine Linux for a smaller image
+FROM ruby:3.3.0-alpine
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Install apt-get dependencies
-RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
+# Install build dependencies, Node.js, npm, and other essential tools
+# Alpine's package manager is `apk`. `build-base` includes compilers like gcc.
+# `libffi-dev`, `libpq-dev`, `postgresql-dev` are for database gems.
+# `tzdata` for timezone data. `nodejs` and `npm` for JavaScript assets.
+# `bash`, `git`, `less`, `vim` are for easier debugging and interaction inside the container.
+RUN apk add --no-cache \
+    build-base \
+    libffi-dev \
     libpq-dev \
+    postgresql-dev \
+    tzdata \
     nodejs \
     npm \
-    # Add any other dependencies your app needs (e.g., imagemagick, libvips, etc.)
-    && rm -rf /var/lib/apt/lists/*
+    bash \
+    git \
+    less \
+    vim \
+    && rm -rf /var/cache/apk/* # Clean up apk cache to reduce image size
 
-# Install Yarn globally
-RUN npm install -g yarn
-
-# Copy Gemfile and Gemfile.lock, then install Ruby gems
+# Copy Gemfile and Gemfile.lock to leverage Docker's build cache
+# If these files don't change, this layer won't be rebuilt.
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --jobs "$(nproc)" --retry 3
 
-# Copy package.json and yarn.lock, then install Node.js packages
-COPY package.json yarn.lock ./
-RUN yarn install --check-files # Use npm install if not using Yarn
+# Install Ruby gems using Bundler
+# ENV BUNDLE_FORCE_RUBY_PLATFORM=1 ensures Bundler installs platform-agnostic gems.
+ENV BUNDLE_FORCE_RUBY_PLATFORM=1
+RUN bundle install
 
-# >>> ADD THIS LINE HERE <<<
-# Copy the Rails master key file directly into the container.
-# This is reliable for development. For production, consider Docker Secrets.
-COPY config/master.key config/master.key
-
-# Copy the rest of your application code
+# Copy the rest of the application code into the container
 COPY . .
 
-# Precompile assets (optional, depending on your development workflow)
-# If you get asset errors in development, you might need to run this
-# locally or move it to a specific stage in a multi-stage build.
-# RUN bundle exec rails assets:precompile
-
+# Expose port 3000, which is the default for Rails applications
 EXPOSE 3000
 
-# Default command to run the Rails server
-CMD ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+# Start the Rails server
+# `rm -f tmp/pids/server.pid` removes a stale server PID if the container was stopped improperly.
+# `rails db:migrate` runs database migrations (important for fresh deployments).
+# `rails tailwindcss:build` compiles Tailwind CSS.
+# `rails server -b 0.0.0.0` starts the Rails server, binding to all network interfaces.
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && rails db:migrate && rails tailwindcss:build && rails server -b 0.0.0.0"]
