@@ -1,8 +1,7 @@
 # app/models/category.rb
 class Category < ApplicationRecord
-  # Relationships for Posts
-  has_many :post_categories, dependent: :destroy
-  has_many :posts, through: :post_categories
+  has_many :post_categories # Add this line
+  has_many :posts, through: :post_categories # Add this line
 
   validates :name, presence: true, uniqueness: true
 end

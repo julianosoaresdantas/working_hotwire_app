@@ -1,9 +1,10 @@
-<<<<<<< HEAD
+
 <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">
   <p class="text-green-600 text-sm mb-4"><%= notice %></p>
 
-  <h1 class="text-4xl font-extrabold text-gray-900 mb-4"><%= @post.title %></h1>
-  <p class="text-gray-700 text-lg mb-6 leading-relaxed"><%= @post.content %></p>
+<h1 class="text-4xl font-extrabold text-gray-900 mb-4"><%= @post.title %></h1>
+<%# Change this line. Remove the <p> tags for now to let Action Text handle formatting. %>
+<%= @post.content %>
 
   <% if @post.image.attached? %>
     <div class="flex justify-center mb-8">
@@ -52,6 +53,3 @@
     </div>
   <% end %>
 </div>
-=======
-<p style="color: green"><%= notice %></p><div><h1><%= @post.title %></h1><p><%= @post.content %></p><div><%= link_to "Edit this post", edit_post_path(@post) %> | <%= link_to "Back to posts", posts_path %></div></div>
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 # config/storage.yml
 
-=======
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
 test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
@@ -11,15 +8,9 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
-<<<<<<< HEAD
-# For production, you'd configure services like Amazon S3, Google Cloud Storage, etc.
-# production:
-#   service: S3
-#   access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
-#   secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
-#   bucket: your-production-bucket
-#   region: us-east-1
-=======
+# You can keep one set of commented-out cloud examples if you wish,
+# or just remove all the commented-out blocks if you don't need them.
+# For instance, if you want to keep the Rails credentials example:
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3
@@ -27,23 +18,3 @@ local:
 #   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
 #   region: us-east-1
 #   bucket: your_own_bucket-<%= Rails.env %>
-
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# Use bin/rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
-# microsoft:
-#   service: AzureStorage
-#   storage_account_name: your_account_name
-#   storage_access_key: <%= Rails.application.credentials.dig(:azure_storage, :storage_access_key) %>
-#   container: your_container_name-<%= Rails.env %>
-
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

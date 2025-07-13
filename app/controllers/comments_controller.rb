@@ -1,47 +1,48 @@
+# app/controllers/comments_controller.rb
 class CommentsController < ApplicationController
-  before_action :authenticate_user! # Ensure user is logged in to comment
-  before_action :set_post # Ensure post is found
+  before_action :authenticate_user!
+  before_action :set_post # This line is looking for set_post in THIS controller
 
-  # POST /posts/:post_id/comments
   def create
-    @comment = @post.comments.build(comment_params.merge(user: current_user))
+    @comment = @post.comments.build(comment_params)
+    @comment.user = current_user
 
     respond_to do |format|
       if @comment.save
         format.html { redirect_to @post, notice: "Comment was successfully created." }
-        format.turbo_stream # This will look for create.turbo_stream.erb
+        format.turbo_stream
       else
-        format.html { redirect_to @post, alert: "Could not create comment." }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { alert: "Could not create comment." }) }
+        format.html { render "posts/show", status: :unprocessable_entity }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace(
+            "new_comment_form",
+            partial: "comments/form",
+            locals: { post: @post, comment: @comment }
+          ),
+          status: :unprocessable_entity
+        }
       end
     end
   end
 
-  # DELETE /posts/:post_id/comments/:id
   def destroy
+    # Assuming you'll have a destroy action for comments eventually
+    # You'll need @comment here too.
     @comment = @post.comments.find(params[:id])
-
-    # Basic authorization: only owner can delete
-    if @comment.user == current_user
-      @comment.destroy
-      respond_to do |format|
-        format.html { redirect_to @post, notice: "Comment was successfully destroyed." }
-        format.turbo_stream # This will look for destroy.turbo_stream.erb
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to @post, alert: "Not authorized to delete this comment." }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash", locals: { alert: "Not authorized to delete this comment." }) }
-      end
+    @comment.destroy!
+    respond_to do |format|
+      format.html { redirect_to @post, notice: "Comment was successfully destroyed." }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@comment) }
     end
   end
 
   private
-    def set_post
-      @post = Post.find(params[:post_id])
-    end
 
-    def comment_params
-      params.require(:comment).permit(:content)
-    end
+  def set_post
+    @post = Post.find(params[:post_id])
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content)
+  end
 end

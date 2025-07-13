@@ -1,8 +1,7 @@
-<<<<<<< HEAD
-<div class="max-w-xl mx-auto py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">New Post</h1>
-  <%= render "form", post: @post %>
-</div>
-=======
-<h1>New post</h1><%= form_with(model: @post, data: { turbo: false }) do |form| %><%= render "form", post: @post, form: form %><% end %><br><div><%= link_to "Back to posts", posts_path %></div>
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13
+<%# app/views/posts/new.html.erb %>
+
+<h1>New Post</h1>
+
+<%= render "form", post: @post %>
+
+<%= link_to "Back to posts", posts_path %>

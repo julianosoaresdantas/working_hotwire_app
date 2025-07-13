@@ -1,10 +1,11 @@
-<<<<<<< HEAD
 <%# app/views/posts/_form.html.erb %>
-<%= form_with(model: post, class: "max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md") do |form| %>
+
+<%= form_with(model: post, class: "mb-4") do |form| %>
+
   <% if post.errors.any? %>
-    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-6" role="alert">
-      <h2 class="font-bold mb-2"><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-      <ul class="list-disc list-inside">
+    <div id="error_explanation" class="text-red-600 mb-4">
+      <h2 class="font-bold"><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul>
         <% post.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -19,30 +20,19 @@
 
   <div class="mb-4">
     <%= form.label :content, class: "block text-gray-700 text-sm font-bold mb-2" %>
-    <%= form.text_area :content, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32" %>
+    <%= form.rich_text_area :content, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32" %>
   </div>
 
-  <div class="mb-6">
-    <%= form.label :image, class: "block text-gray-700 text-sm font-bold mb-2" %>
-    <%= form.file_field :image, class: "block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" %>
-  </div>
-
-  <%# NEW: Category selection field %>
-  <div class="mb-6">
+  <div class="mb-4">
     <%= form.label :category_ids, "Categories", class: "block text-gray-700 text-sm font-bold mb-2" %>
     <%= form.select :category_ids,
                     @categories.map { |c| [c.name, c.id] },
                     {},
                     multiple: true,
                     class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-32" %>
-    <p class="text-xs text-gray-500 mt-1">Hold Ctrl (or Cmd on Mac) to select multiple categories.</p>
   </div>
 
-  <div class="flex items-center justify-between">
-    <%= form.submit "Save Post", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline cursor-pointer" %>
-    <%= link_to "Back", posts_path, class: "inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800" %>
+  <div class="actions">
+    <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
   </div>
 <% end %>
-=======
-<% if post.errors.any? %><div style="color: red"><h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2><ul><% post.errors.each do |error| %><li><%= error.full_message %></li><% end %></ul></div><% end %><div class="field"> <%= form.label :title %><br> <%= form.text_field :title %></div><div class="field"> <%= form.label :content %><br> <%= form.text_area :content %></div><div><%= form.submit %></div>
->>>>>>> 2d32fe77661cbb6d5c2f23a40816540019075e13

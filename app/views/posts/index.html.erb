@@ -10,5 +10,3 @@
   <%= link_to "Create New Post", new_post_path, class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-colors text-lg" %>
 </div>
 
-<p style="color: green"><%= notice %></p><h1>Posts</h1><div id="posts"><% @posts.each do |post| %><div id="<%= dom_id(post) %>"><p><strong>Title:</strong> <%= post.title %></p><p><strong>Content:</strong> <%= post.content %></p><p><%= link_to "Show this post", post %> | <%= link_to "Edit this post", edit_post_path(post) %> | <%= link_to "Destroy this post", post, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></p></div><% end %></div><%= link_to "New post", new_post_path %>
- 2d32fe77661cbb6d5c2f23a40816540019075e13
